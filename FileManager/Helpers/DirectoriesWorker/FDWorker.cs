@@ -95,7 +95,15 @@ namespace FileManager
         /// <param name="path">Полный путь к файлу/папке</param>
         public static void DeleteFileOrDirectory(string path)
         {
-            Directory.Delete(path, true);
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            else if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+            
         }
     }
 }

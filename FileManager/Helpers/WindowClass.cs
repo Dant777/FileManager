@@ -104,6 +104,7 @@ namespace FileManager
 
         private void DeleteFileOrDir()
         {
+            
             FDWorker.DeleteFileOrDirectory(_selectedDir[_itemDirIndex]);
             UpdateDir();
         }
@@ -206,6 +207,7 @@ namespace FileManager
 
 
         }
+
         /// <summary>
         /// Обновление окна
         /// </summary>
