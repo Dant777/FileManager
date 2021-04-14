@@ -9,13 +9,24 @@ namespace FileManager
     {
         static void Main(string[] args)
         {
-            Console.WindowHeight = 40;
 
-            Console.BackgroundColor = ConsoleColor.DarkBlue;
-            Console.Clear();
-            DrawingClass.PrintSquareDoubelLine(0, 0, Console.WindowWidth, Console.WindowHeight/2, "Title");
-            DrawingClass.PrintSquareDoubelLine(0, (Console.WindowHeight / 2), Console.WindowWidth, Console.WindowHeight / 2);
-            Console.ReadKey();
+            WindowClass window = new WindowClass();
+
+            window.StartFMWindows();
+
+            //string root = @"C:\Users\Dant\Downloads";
+
+
+            //var files = Directory.GetFiles(root, ".");
+            //Console.WriteLine(files.Length);
+            //foreach (var item in files)
+            //{
+            //    Console.WriteLine("\n" + Path.GetFullPath(item));
+            //}
+
+            //Console.ReadKey();
         }
     }
 }
+
+

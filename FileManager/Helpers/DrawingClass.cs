@@ -83,6 +83,8 @@ namespace FileManager
         
             //Левая сторона
             Console.SetCursorPosition(startPositionX, startPositionY);
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.White;
             Console.Write((char)DoubleLine.TopLeft);
             for (int i = startPositionY + 1; i < corectSizeY - 1; i++)
             {
@@ -132,6 +134,80 @@ namespace FileManager
                 }
               
             }
+        }
+
+        /// <summary>
+        /// Печать текста в консоле в заданной позиции
+        /// </summary>
+        /// <param name="txt">Текст</param>
+        /// <param name="startPositionX">Начальная координата по X</param>
+        /// <param name="startPositionY">Начальная координата по У</param>
+        static public void PrintString(string txt, int startPositionX, int startPositionY)
+        {
+            Console.SetCursorPosition(startPositionX, startPositionY);
+            Console.Write(txt);
+        }
+
+        /// <summary>
+        /// Печать списка
+        /// </summary>
+        /// <param name="x">начальная координата по Х</param>
+        /// <param name="y">начальная координата по У</param>
+        /// <param name="selectedDir">Список для пичати</param>
+        /// <param name="itemIndex">Индекс для выделения выбора</param>
+        static public void PrintFileOrDir(int x, int y, List<string> selectedDir, int itemIndex)
+        {
+ 
+
+            for (int i = 0; i < selectedDir.Count; i++)
+            {
+                if (i == itemIndex)
+                {
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                }
+                else
+                {
+                    Console.BackgroundColor = ConsoleColor.DarkBlue;
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                PrintString(selectedDir[i], x, y + i);
+            }
+
+        }
+        /// <summary>
+        /// Печать списка
+        /// </summary>
+        /// <param name="x">начальная координата по Х</param>
+        /// <param name="y">начальная координата по У</param>
+        /// <param name="selectedDir">Список для пичати</param>
+        /// <param name="itemIndex">Индекс для выделения выбора</param>
+        /// <param name="countController">Огранечитель вывода списка</param>
+        static public void PrintFileOrDir(int x, int y, List<string> selectedDir, int itemIndex, CountControllerInWin countController)
+        {
+
+            int countY = 0;
+            for (int i = countController.StartIndex; i < selectedDir.Count; i++)
+            {
+                if(i > countController.EndIndex)
+                {
+                    break;
+                }
+
+                if (i == itemIndex)
+                {
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                }
+                else
+                {
+                    Console.BackgroundColor = ConsoleColor.DarkBlue;
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                PrintString(selectedDir[i], x, y + countY);
+                countY++;
+            }
+
         }
     }
 }
