@@ -105,5 +105,88 @@ namespace FileManager
             }
             
         }
+
+        /// <summary>
+        /// Перемещение файлов/папки 
+        /// </summary>
+        /// <param name="sourceFolder">Перемещаемая папка/файл</param>
+        /// <param name="destFolder">Путь куда перемещается папка/файл</param>
+        public static void MoveFileOrDirectory(string sourceFolder, string destFolder)
+        {
+            if (File.Exists(sourceFolder))
+            {
+                CopyFile(sourceFolder, destFolder);
+                DeleteFileOrDirectory(sourceFolder);
+            }
+            else if (Directory.Exists(sourceFolder))
+            {
+                CopyFolder(sourceFolder, destFolder);
+                DeleteFileOrDirectory(sourceFolder);
+            }
+        }
+
+        /// <summary>
+        /// Копирование файлов/папки 
+        /// </summary>
+        /// <param name="sourceFolder">Копирование папка/файл</param>
+        /// <param name="destFolder">Путь куда копированть папка/файл</param>
+        public static void CopyFileOrDirectory(string sourceFolder, string destFolder)
+        {
+            if (File.Exists(sourceFolder))
+            {
+                CopyFile(sourceFolder, destFolder);
+                
+            }
+            else if (Directory.Exists(sourceFolder))
+            {
+                CopyFolder(sourceFolder, destFolder);
+               
+            }
+        }
+
+        /// <summary>
+        /// Копирование папки
+        /// </summary>
+        /// <param name="sourceFolder">Перемещаемая папка/файл</param>
+        /// <param name="destFolder">Путь куда перемещается папка/файл</param>
+        static private void CopyFolder(string sourceFolder, string destFolder)
+        {
+   
+            if (!Directory.Exists(destFolder))
+                Directory.CreateDirectory(destFolder);
+            string[] files = Directory.GetFiles(sourceFolder);
+            foreach (string file in files)
+            {
+                string name = Path.GetFileName(file);
+                string dest = Path.Combine(destFolder, name);
+                File.Copy(file, dest);
+            }
+            string[] folders = Directory.GetDirectories(sourceFolder);
+            foreach (string folder in folders)
+            {
+                string name = Path.GetFileName(folder);
+                string dest = Path.Combine(destFolder, name);
+                CopyFolder(folder, dest);
+            }
+
+        }
+        /// <summary>
+        /// Копирование файла
+        /// </summary>
+        /// <param name="sourceFolder">Перемещаемая папка/файл</param>
+        /// <param name="destFolder">Путь куда перемещается папка/файл</param>
+        static private void CopyFile(string sourceFolder, string destFolder)
+        {
+            string fileName = Path.GetFileName(sourceFolder);
+            string copyFullFileName = destFolder + fileName;
+
+            if (File.Exists(copyFullFileName))
+            {
+                copyFullFileName += " - копия";
+            }
+
+            File.Copy(sourceFolder, copyFullFileName);
+        }
+
     }
 }

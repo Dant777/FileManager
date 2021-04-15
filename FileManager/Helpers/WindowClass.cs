@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,9 @@ namespace FileManager
         private bool _isWork = true;
 
         private string _selectedRoot = "Disks";
+        private string _txtInfo = $"Hello FM v.{Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
+        private string _soursePath = string.Empty;
+        private string _destPath = string.Empty;
 
         private List<string> _selectedDir;
         private List<string> _selectedDirName;
@@ -46,7 +50,7 @@ namespace FileManager
             while (_isWork)
             {
                 CreateFileManagerWindow();
-                CreateInfoWindow();
+                CreateInfoWindow(_txtInfo);
             }
             
         }
@@ -70,9 +74,11 @@ namespace FileManager
         /// <summary>
         /// Создание окна с информацией
         /// </summary>
-        private void CreateInfoWindow()
+        private void CreateInfoWindow(string txt)
         {
-            DrawingClass.PrintSquareDoubelLine(0, (Console.WindowHeight / 2 ), Console.WindowWidth, Console.WindowHeight / 3);
+            
+            DrawingClass.PrintSquareDoubelLine(0, Console.WindowHeight / 2, Console.WindowWidth, Console.WindowHeight / 3);
+            DrawingClass.PrintString(txt, START_WINDOW_COORD_X + 1, (Console.WindowHeight / 2) + 1);
             WaitForInput();
         }
 
@@ -93,18 +99,27 @@ namespace FileManager
                 case ConsoleKey.Enter:
                     PressEnter();
                     break;
+                case ConsoleKey.F2:
+                    MoveDirOrFile(_selectedDir[_itemDirIndex]);
+                    break;
+                case ConsoleKey.F3:
+                    CopyDirOrFile(_selectedDir[_itemDirIndex]);
+                    break;
                 case ConsoleKey.F4:
                     DeleteFileOrDir();
                     break;
                 case ConsoleKey.F5:
                     _isWork = false;
                     break;
+                case ConsoleKey.Escape:
+                    UpdateDir();
+                    break;
             }
         }
 
         private void DeleteFileOrDir()
         {
-            
+            SetStrFoldersEmpty();
             FDWorker.DeleteFileOrDirectory(_selectedDir[_itemDirIndex]);
             UpdateDir();
         }
@@ -187,7 +202,7 @@ namespace FileManager
         /// </summary>
         private void PressEnter()
         {
-            
+            SetStrFoldersEmpty();
             _selectedRoot = _selectedDir[_itemDirIndex];
             _selectedDir = FDWorker.GetDirectory(_selectedRoot);
             _selectedDirName = FDWorker.GetDirectoryNames(_selectedRoot);
@@ -229,6 +244,110 @@ namespace FileManager
             {
                 _selectedRoot = Directory.GetDirectoryRoot(_selectedRoot);
             }
+
+            SetStrFoldersEmpty();
+        }
+       
+        /// <summary>
+        /// Перемещение файла/папки в два клика
+        /// </summary>
+        /// <param name="path"></param>
+        private void MoveDirOrFile(string path)
+        {
+            if (_soursePath == string.Empty)
+            {
+                _soursePath = path;
+            }
+            else
+            {
+                string dirName = string.Empty;
+                string copyFullDirName = string.Empty;
+
+                if (!File.Exists(_soursePath))
+                {
+                    DirectoryInfo dir = new DirectoryInfo(_soursePath);
+                    dirName = dir.Name;
+                    
+                }
+                
+
+                if (File.Exists(path))
+                {
+                    copyFullDirName = Path.GetDirectoryName(path) + "\\" + dirName;
+                    _destPath = copyFullDirName;
+                }
+                else
+                {
+                    copyFullDirName = path + "\\" + dirName;
+                    _destPath = copyFullDirName;
+                }
+                
+            }
+
+            _txtInfo = $"Переместить {_soursePath} в ... *Еще раз F2 для перемещение в директорию*";
+
+            if (_soursePath != string.Empty && _destPath != string.Empty)
+            {
+                FDWorker.MoveFileOrDirectory(_soursePath, _destPath);
+                UpdateDir();
+            }
+
+        }
+        
+        /// <summary>
+        /// Копирование файла/папки в два клика
+        /// </summary>
+        /// <param name="path"></param>
+        private void CopyDirOrFile(string path)
+        {
+            if (_soursePath == string.Empty)
+            {
+                _soursePath = path;
+            }
+            else
+            {
+                string dirName = string.Empty;
+                string copyFullDirName = string.Empty;
+
+                if (!File.Exists(_soursePath))
+                {
+                    DirectoryInfo dir = new DirectoryInfo(_soursePath);
+                    dirName = dir.Name;
+
+                }
+
+
+                if (File.Exists(path))
+                {
+                    copyFullDirName = Path.GetDirectoryName(path) + "\\" + dirName;
+                    _destPath = copyFullDirName;
+                }
+                else
+                {
+                    copyFullDirName = path + "\\" + dirName;
+                    _destPath = copyFullDirName;
+                }
+
+            }
+
+            _txtInfo = $"Копировать {_soursePath} в ... *Еще раз F3 для копировать в директорию*";
+
+            if (_soursePath != string.Empty && _destPath != string.Empty)
+            {
+                FDWorker.CopyFileOrDirectory(_soursePath, _destPath);
+                UpdateDir();
+            }
+
+        }
+
+        /// <summary>
+        /// Очищает информационные поля
+        /// </summary>
+        private void SetStrFoldersEmpty()
+        {
+            _soursePath = string.Empty;
+            _destPath = string.Empty;
+            _txtInfo = string.Empty;
         }
     }
 }

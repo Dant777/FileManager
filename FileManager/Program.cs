@@ -21,7 +21,7 @@ namespace FileManager
             //Console.WriteLine(files.Length);
             //foreach (var item in files)
             //{
-            //    Console.WriteLine("\n" + Path.GetFullPath(item));
+            //    Console.WriteLine("\n" + Path.GetFileName(item));
             //}
 
             //Console.ReadKey();
