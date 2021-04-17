@@ -59,7 +59,7 @@ namespace FileManager
             while (_isWork)
             {
                 CreateFileManagerWindow();
-                DrawingClass.PrintButton("testc",50, 35);
+                DrawingClass.PrintButtons(0, 35);
                 CreateInfoWindow();
                 try
                 {

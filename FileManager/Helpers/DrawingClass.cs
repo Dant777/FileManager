@@ -283,26 +283,45 @@ namespace FileManager
 
         }
 
+        /// <summary>
+        /// Печатает кнопки и располагает по длине окна
+        /// </summary>
+        /// <param name="x">Стартовое положение по Х</param>
+        /// <param name="y">Стартовое положение по У</param>
         static public void PrintButtons(int x, int y)
         {
 
-            int buttonSizeX = 12;
-            int spaceSize = (Console.WindowWidth - (buttonSizeX * 5)) / 6;
-            //F1 - Info
+            string[] buttonsText = new string[] 
+            { 
+                "F1 - Info", 
+                "F2 - Move", 
+                "F3 - Copy", 
+                "F4 - Del", 
+                "F5 - Exit",
+                "F8 - Error",
+                "Esc - Cansel"
+            };
 
-            ////F2 - Move
-            //buttonText = "F2 - Move";
-            //PrintButton(buttonText, x + spaceSize, y);
-            string buttonText = "F1 - Info";
-            for (int i = 0; i < 1; i++)
+            int buttonSizeX = 15;
+            int spaceSize = (Console.WindowWidth - (buttonSizeX * buttonsText.Length)) / (buttonsText.Length + 1);
+
+            for (int i = 1; i <= buttonsText.Length; i++)
             {
-                int startPosX = x + (buttonSizeX * i) + spaceSize;
-                PrintButton(buttonText, startPosX, y);
+                int startPosX = x + (buttonSizeX * (i - 1)) + (spaceSize * i);
+                PrintButton(buttonsText[i-1], startPosX, y, buttonSizeX);
             }
 
         }
 
-        static public void PrintButton(string txt, int x, int y, int buttonSizeY = 3, int buttonSizeX = 12)
+        /// <summary>
+        /// Печать кнопку с текстом
+        /// </summary>
+        /// <param name="txt">Текст в кнопки</param>
+        /// <param name="x">Стартовое положение по Х</param>
+        /// <param name="y">Стартовое положение по У</param>
+        /// <param name="buttonSizeX">Размер кнопки по Х</param>
+        /// <param name="buttonSizeY">Размер кнопки по У</param>
+        static public void PrintButton(string txt, int x, int y, int buttonSizeX = 12, int buttonSizeY = 3 )
         {
            
             int spaceSize = (Console.WindowWidth - (buttonSizeX * 5)) / 6;
