@@ -14,8 +14,8 @@ namespace FileManager
             WindowClass window = new WindowClass();
 
             window.StartFMWindows();
-
-            //Console.ReadKey();
+            //DrawingClass.PrintSquareLine(0, 0, 10, 5);
+            Console.ReadKey();
         }
         
         

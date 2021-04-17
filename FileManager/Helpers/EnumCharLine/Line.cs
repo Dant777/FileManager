@@ -1,5 +1,5 @@
 ﻿
-namespace FileManager.Helpers.EnumCharLine
+namespace FileManager
 {
     public enum Line
     {

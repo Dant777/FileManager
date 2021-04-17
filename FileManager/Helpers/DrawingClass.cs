@@ -11,6 +11,59 @@ namespace FileManager
     public static class DrawingClass
     {
         /// <summary>
+        /// Рисует в консоли квадратную рамку линиями
+        /// </summary>
+        /// <param name="startPositionX">Начальная координата по X</param>
+        /// <param name="startPositionY">Начальная координата по У</param>
+        /// <param name="sizeSquareX">Длина по Х</param>
+        /// <param name="sizeSquareY">Длина по У</param>
+        static public void PrintSquareLine(
+            int startPositionX,
+            int startPositionY,
+            int sizeSquareX,
+            int sizeSquareY)
+        {
+            int corectSizeX = startPositionX + sizeSquareX;
+            int corectSizeY = startPositionY + sizeSquareY;
+            //Левая сторона
+            Console.SetCursorPosition(startPositionX, startPositionY);
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write((char)Line.TopLeft);
+            for (int i = startPositionY + 1; i < corectSizeY - 1; i++)
+            {
+                Console.SetCursorPosition(startPositionX, i);
+                Console.Write((char)Line.LineVertical);
+            }
+            Console.SetCursorPosition(startPositionX, corectSizeY - 1);
+            Console.Write((char)Line.BottomLeft);
+
+            //Правая сторона
+            Console.SetCursorPosition(corectSizeX - 1, startPositionY);
+            Console.Write((char)Line.TopRight);
+            for (int i = startPositionY + 1; i < corectSizeY - 1; i++)
+            {
+                Console.SetCursorPosition(corectSizeX - 1, i);
+                Console.Write((char)Line.LineVertical);
+            }
+            Console.SetCursorPosition(corectSizeX - 1, corectSizeY - 1);
+            Console.Write((char)Line.BottomRight);
+
+            //Низ
+            for (int i = startPositionX + 1; i < corectSizeX - 1; i++)
+            {
+                Console.SetCursorPosition(i, corectSizeY - 1);
+                Console.Write((char)Line.LineHorizontal);
+            }
+
+            //Верх
+            for (int i = startPositionX + 1; i < corectSizeX - 1; i++)
+            {
+                Console.SetCursorPosition(i, startPositionY);
+                Console.Write((char)Line.LineHorizontal);
+            }
+        }
+        /// <summary>
         /// Рисует в консоли квадратную рамку двойными линиями
         /// </summary>
         /// <param name="startPositionX">Начальная координата по X</param>
@@ -63,6 +116,7 @@ namespace FileManager
                 Console.Write((char)DoubleLine.LineHorizontal);
             }
         }
+
 
         /// <summary>
         /// Рисует в консоли квадратную рамку двойными линиями с названием рамки
@@ -227,6 +281,36 @@ namespace FileManager
                 PrintString(infoList[i], x, y + i);
             }
 
+        }
+
+        static public void PrintButtons(int x, int y)
+        {
+
+            int buttonSizeX = 12;
+            int spaceSize = (Console.WindowWidth - (buttonSizeX * 5)) / 6;
+            //F1 - Info
+
+            ////F2 - Move
+            //buttonText = "F2 - Move";
+            //PrintButton(buttonText, x + spaceSize, y);
+            string buttonText = "F1 - Info";
+            for (int i = 0; i < 1; i++)
+            {
+                int startPosX = x + (buttonSizeX * i) + spaceSize;
+                PrintButton(buttonText, startPosX, y);
+            }
+
+        }
+
+        static public void PrintButton(string txt, int x, int y, int buttonSizeY = 3, int buttonSizeX = 12)
+        {
+           
+            int spaceSize = (Console.WindowWidth - (buttonSizeX * 5)) / 6;
+
+            PrintSquareLine(x, y, buttonSizeX, buttonSizeY);
+
+            int txtOffset = (buttonSizeX - txt.Length) / 2;
+            PrintString(txt,  x + 1 + txtOffset, y + buttonSizeY / 2);
         }
     }
 }

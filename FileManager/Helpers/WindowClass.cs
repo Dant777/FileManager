@@ -56,21 +56,25 @@ namespace FileManager
 
         public void StartFMWindows()
         {
-            try
+            while (_isWork)
             {
-                while (_isWork)
+                CreateFileManagerWindow();
+                DrawingClass.PrintButton("testc",50, 35);
+                CreateInfoWindow();
+                try
                 {
-                    CreateFileManagerWindow();
-                    CreateInfoWindow(_txtInfo);
+                
+                    
+                
+                }
+                catch (Exception e)
+                {
+
+                    ExceptionWriter.Write(e.Message);
+                    _isWork = false;
                 }
             }
-            catch (Exception e)
-            {
 
-                ExceptionWriter.Write(e.Message);
-            }
-            
-            
         }
 
         /// <summary>
@@ -92,11 +96,10 @@ namespace FileManager
         /// <summary>
         /// Создание окна с информацией
         /// </summary>
-        private void CreateInfoWindow(string txt)
+        private void CreateInfoWindow()
         {
 
             DrawingClass.PrintSquareDoubelLine(0, Console.WindowHeight / 2, Console.WindowWidth, Console.WindowHeight / 3);
-            DrawingClass.PrintString(txt, START_WINDOW_COORD_X + 1, (Console.WindowHeight / 2) + 1);
             DrawingClass.PrintList(START_WINDOW_COORD_X + 1, (Console.WindowHeight / 2) + 1, _listInfo);
             WaitForInput();
         }
