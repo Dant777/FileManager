@@ -15,15 +15,6 @@ namespace FileManager
 
             window.StartFMWindows();
 
-            //SettingWorkerJson settingWorker = new SettingWorkerJson();
-            //settingWorker.ReadJsonSetting();
-            //AppSettingClass appSetting = settingWorker.GetSettingClass;
-            //Console.WriteLine(appSetting.LastPath);
-
-            //appSetting.LastPath = @"C:\asda\sdadq\111";
-            //settingWorker.WriteSettingInFile();
-            //Console.WriteLine(appSetting.LastPath);
-
             //Console.ReadKey();
         }
         

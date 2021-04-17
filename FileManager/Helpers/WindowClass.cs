@@ -56,11 +56,20 @@ namespace FileManager
 
         public void StartFMWindows()
         {
-            while (_isWork)
+            try
             {
-                CreateFileManagerWindow();
-                CreateInfoWindow(_txtInfo);
+                while (_isWork)
+                {
+                    CreateFileManagerWindow();
+                    CreateInfoWindow(_txtInfo);
+                }
             }
+            catch (Exception e)
+            {
+
+                ExceptionWriter.Write(e.Message);
+            }
+            
             
         }
 
@@ -129,6 +138,9 @@ namespace FileManager
                 case ConsoleKey.F5:
                     _settingWorker.WriteSettingInFile(_appSetting);
                     _isWork = false;
+                    break;
+                case ConsoleKey.F8:
+                    throw new ArgumentException("Это искуственная ошибка");
                     break;
                 case ConsoleKey.Escape:
                     _canClearInfo = true;
