@@ -58,14 +58,13 @@ namespace FileManager
         {
             while (_isWork)
             {
-                CreateFileManagerWindow();
-                DrawingClass.PrintButtons(0, 35);
-                CreateInfoWindow();
+                
                 try
                 {
-                
-                    
-                
+                    CreateFileManagerWindow();
+                    DrawingClass.PrintButtons(0, 35);
+                    CreateInfoWindow();
+
                 }
                 catch (Exception e)
                 {
