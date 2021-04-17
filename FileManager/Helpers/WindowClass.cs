@@ -17,14 +17,16 @@ namespace FileManager
         private int _itemDirIndex = 0;
 
         private bool _isWork = true;
+        private bool _canClearInfo = true;
 
         private string _selectedRoot = "Disks";
-        private string _txtInfo = $"Hello FM v.{Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
+        private string _txtInfo = $"Hello FM v.{Assembly.GetExecutingAssembly().GetName().Version}";
         private string _soursePath = string.Empty;
         private string _destPath = string.Empty;
 
         private List<string> _selectedDir;
         private List<string> _selectedDirName;
+        private List<string> _listInfo;
 
         private CountControllerInWin _indexController;
 
@@ -38,7 +40,7 @@ namespace FileManager
 
             _selectedDir = FDWorker.GetDirectory("");
             _selectedDirName = FDWorker.GetDirectoryNames("");
-
+            _listInfo = new List<string> { _txtInfo };
             _indexController = new CountControllerInWin();
             _indexController.StartIndex = 0;
             _indexController.EndIndex = MAX_NUMBER_FILE_NAMES;
@@ -76,9 +78,10 @@ namespace FileManager
         /// </summary>
         private void CreateInfoWindow(string txt)
         {
-            
+
             DrawingClass.PrintSquareDoubelLine(0, Console.WindowHeight / 2, Console.WindowWidth, Console.WindowHeight / 3);
             DrawingClass.PrintString(txt, START_WINDOW_COORD_X + 1, (Console.WindowHeight / 2) + 1);
+            DrawingClass.PrintList(START_WINDOW_COORD_X + 1, (Console.WindowHeight / 2) + 1, _listInfo);
             WaitForInput();
         }
 
@@ -87,6 +90,10 @@ namespace FileManager
         /// </summary>
         private void WaitForInput()
         {
+            if (_canClearInfo)
+            {
+                SetStrFieldsEmpty();
+            }
             ConsoleKeyInfo cki = Console.ReadKey();
             switch (cki.Key)
             {
@@ -98,6 +105,9 @@ namespace FileManager
                     break;
                 case ConsoleKey.Enter:
                     PressEnter();
+                    break;
+                case ConsoleKey.F1:
+                    GetInfoFileOrDir();
                     break;
                 case ConsoleKey.F2:
                     MoveDirOrFile(_selectedDir[_itemDirIndex]);
@@ -112,14 +122,25 @@ namespace FileManager
                     _isWork = false;
                     break;
                 case ConsoleKey.Escape:
+                    _canClearInfo = true;
                     UpdateDir();
                     break;
             }
         }
-
+        /// <summary>
+        /// Информация о папке/файле
+        /// </summary>
+        private void GetInfoFileOrDir()
+        {
+            _listInfo.AddRange(FDWorker.InfoFileOrDirectory(_selectedDir[_itemDirIndex]));
+            
+        }
+        /// <summary>
+        /// Удаление файла/папки
+        /// </summary>
         private void DeleteFileOrDir()
         {
-            SetStrFoldersEmpty();
+            SetStrFieldsEmpty();
             FDWorker.DeleteFileOrDirectory(_selectedDir[_itemDirIndex]);
             UpdateDir();
         }
@@ -202,7 +223,7 @@ namespace FileManager
         /// </summary>
         private void PressEnter()
         {
-            SetStrFoldersEmpty();
+            SetStrFieldsEmpty();
             _selectedRoot = _selectedDir[_itemDirIndex];
             _selectedDir = FDWorker.GetDirectory(_selectedRoot);
             _selectedDirName = FDWorker.GetDirectoryNames(_selectedRoot);
@@ -245,7 +266,7 @@ namespace FileManager
                 _selectedRoot = Directory.GetDirectoryRoot(_selectedRoot);
             }
 
-            SetStrFoldersEmpty();
+            SetStrFieldsEmpty();
         }
        
         /// <summary>
@@ -254,6 +275,7 @@ namespace FileManager
         /// <param name="path"></param>
         private void MoveDirOrFile(string path)
         {
+            _canClearInfo = false;
             if (_soursePath == string.Empty)
             {
                 _soursePath = path;
@@ -284,12 +306,13 @@ namespace FileManager
                 
             }
 
-            _txtInfo = $"Переместить {_soursePath} в ... *Еще раз F2 для перемещение в директорию*";
+            _listInfo.Add($"Переместить {_soursePath} в ... *Еще раз F2 для перемещение в директорию*");
 
             if (_soursePath != string.Empty && _destPath != string.Empty)
             {
                 FDWorker.MoveFileOrDirectory(_soursePath, _destPath);
                 UpdateDir();
+                _canClearInfo = true;
             }
 
         }
@@ -300,6 +323,7 @@ namespace FileManager
         /// <param name="path"></param>
         private void CopyDirOrFile(string path)
         {
+            _canClearInfo = false;
             if (_soursePath == string.Empty)
             {
                 _soursePath = path;
@@ -330,12 +354,13 @@ namespace FileManager
 
             }
 
-            _txtInfo = $"Копировать {_soursePath} в ... *Еще раз F3 для копировать в директорию*";
+            _listInfo.Add($"Копировать {_soursePath} в ... *Еще раз F3 для копировать в директорию*");
 
             if (_soursePath != string.Empty && _destPath != string.Empty)
             {
                 FDWorker.CopyFileOrDirectory(_soursePath, _destPath);
                 UpdateDir();
+                _canClearInfo = true;
             }
 
         }
@@ -343,11 +368,11 @@ namespace FileManager
         /// <summary>
         /// Очищает информационные поля
         /// </summary>
-        private void SetStrFoldersEmpty()
+        private void SetStrFieldsEmpty()
         {
             _soursePath = string.Empty;
             _destPath = string.Empty;
-            _txtInfo = string.Empty;
+            _listInfo.RemoveRange(1, _listInfo.Count - 1);
         }
     }
 }

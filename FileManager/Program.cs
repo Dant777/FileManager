@@ -14,7 +14,7 @@ namespace FileManager
 
             window.StartFMWindows();
 
-            //string root = @"C:\Users\Dant\Downloads";
+            //string root = @"C:\SCAD Soft";
 
 
             //var files = Directory.GetFiles(root, ".");
@@ -24,7 +24,26 @@ namespace FileManager
             //    Console.WriteLine("\n" + Path.GetFileName(item));
             //}
 
-            //Console.ReadKey();
+            Console.ReadKey();
+        }
+        public static long DirSize(DirectoryInfo d)
+        {
+            long Size = 0;
+            // Add file sizes.
+            FileInfo[] fis = d.GetFiles();
+            foreach (FileInfo fi in fis)
+            {
+                Size += fi.Length;
+                
+            }
+            // Add subdirectory sizes.
+            DirectoryInfo[] dis = d.GetDirectories();
+            foreach (DirectoryInfo di in dis)
+            {
+                Size += DirSize(di);
+                
+            }
+            return Size;
         }
     }
 }

@@ -27,6 +27,8 @@ namespace FileManager
             int corectSizeY = startPositionY + sizeSquareY;
             //Левая сторона
             Console.SetCursorPosition(startPositionX, startPositionY);
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.White;
             Console.Write((char)DoubleLine.TopLeft);
             for (int i = startPositionY + 1; i < corectSizeY - 1; i++)
             {
@@ -206,6 +208,23 @@ namespace FileManager
                 }
                 PrintString(selectedDir[i], x, y + countY);
                 countY++;
+            }
+
+        }
+
+        /// <summary>
+        /// Печать в консоли списка по координатам
+        /// </summary>
+        /// <param name="x">начальная координата по Х</param>
+        /// <param name="y">начальная координата по У</param>
+        /// <param name="infoList">Список для печати</param>
+        static public void PrintList(int x, int y, List<string> infoList)
+        {
+
+            for (int i = 0; i < infoList.Count; i++)
+            {
+           
+                PrintString(infoList[i], x, y + i);
             }
 
         }

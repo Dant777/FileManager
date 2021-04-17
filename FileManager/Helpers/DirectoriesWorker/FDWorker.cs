@@ -145,6 +145,35 @@ namespace FileManager
         }
 
         /// <summary>
+        /// Информация о папке/файле
+        /// </summary>
+        /// <param name="path">Полный путь к папке/файлу</param>
+        /// <returns>Список с информацией о папке/файле</returns>
+        public static List<string> InfoFileOrDirectory(string path)
+        {
+            List<string> infoList = new List<string>();
+            if (File.Exists(path))
+            {
+                FileInfo fileInfo = new FileInfo(path);
+                infoList.Add($"Имя файла: {fileInfo.Name}");
+                infoList.Add($"Размер файла: {fileInfo.Length * 0.001}kB");
+                infoList.Add($"Дата создания: {fileInfo.CreationTime}");
+                infoList.Add($"Дата изменения: {fileInfo.LastWriteTime}");
+                
+
+            }
+            else if (Directory.Exists(path))
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(path);
+                infoList.Add($"Имя папки: {dirInfo.Name}");
+                infoList.Add($"Размер: {GetDirectorySize(dirInfo) * 0.001}kB");
+                infoList.Add($"Дата создания: {dirInfo.CreationTime}");
+            }
+
+            return infoList;
+
+        }
+        /// <summary>
         /// Копирование папки
         /// </summary>
         /// <param name="sourceFolder">Перемещаемая папка/файл</param>
@@ -188,5 +217,29 @@ namespace FileManager
             File.Copy(sourceFolder, copyFullFileName);
         }
 
+        /// <summary>
+        /// Получение размера каталога
+        /// </summary>
+        /// <param name="dirInfo">информация о каталоге</param>
+        /// <returns>Размер каталога в Byte</returns>
+        private static long GetDirectorySize(DirectoryInfo dirInfo)
+        {
+            long size = 0;
+            // Add file sizes.
+            FileInfo[] files = dirInfo.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                size += file.Length;
+
+            }
+            // Add subdirectory sizes.
+            DirectoryInfo[] directories = dirInfo.GetDirectories();
+            foreach (DirectoryInfo dir in directories)
+            {
+                size += GetDirectorySize(dir);
+
+            }
+            return size;
+        }
     }
 }
