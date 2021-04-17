@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,41 +11,23 @@ namespace FileManager
         static void Main(string[] args)
         {
 
-            WindowClass window = new WindowClass();
+            //WindowClass window = new WindowClass();
 
-            window.StartFMWindows();
+            //window.StartFMWindows();
 
-            //string root = @"C:\SCAD Soft";
+            SettingWorkerJson settingWorker = new SettingWorkerJson();
+            settingWorker.ReadJsonSetting();
+            AppSettingClass appSetting = settingWorker.GetSettingClass;
+            Console.WriteLine(appSetting.LastPath);
 
-
-            //var files = Directory.GetFiles(root, ".");
-            //Console.WriteLine(files.Length);
-            //foreach (var item in files)
-            //{
-            //    Console.WriteLine("\n" + Path.GetFileName(item));
-            //}
+            appSetting.LastPath = @"C:\asda\sdadq\111";
+            settingWorker.WriteSettingInFile();
+            Console.WriteLine(appSetting.LastPath);
 
             Console.ReadKey();
         }
-        public static long DirSize(DirectoryInfo d)
-        {
-            long Size = 0;
-            // Add file sizes.
-            FileInfo[] fis = d.GetFiles();
-            foreach (FileInfo fi in fis)
-            {
-                Size += fi.Length;
-                
-            }
-            // Add subdirectory sizes.
-            DirectoryInfo[] dis = d.GetDirectories();
-            foreach (DirectoryInfo di in dis)
-            {
-                Size += DirSize(di);
-                
-            }
-            return Size;
-        }
+        
+        
     }
 }
 

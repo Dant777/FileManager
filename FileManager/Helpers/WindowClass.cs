@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace FileManager
 {
@@ -29,6 +30,8 @@ namespace FileManager
         private List<string> _listInfo;
 
         private CountControllerInWin _indexController;
+
+       
 
         public WindowClass( )
         {
