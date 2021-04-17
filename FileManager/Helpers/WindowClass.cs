@@ -247,7 +247,7 @@ namespace FileManager
         /// </summary>
         private void PressEnter()
         {
-            SetStrFieldsEmpty();
+            
             _selectedRoot = _selectedDir[_itemDirIndex];
             _selectedDir = FDWorker.GetDirectory(_selectedRoot);
             _selectedDirName = FDWorker.GetDirectoryNames(_selectedRoot);
