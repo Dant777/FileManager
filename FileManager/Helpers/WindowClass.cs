@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+
 
 namespace FileManager
 {
@@ -31,7 +31,8 @@ namespace FileManager
 
         private CountControllerInWin _indexController;
 
-       
+        private SettingWorkerJson _settingWorker;
+        private AppSettingClass _appSetting;
 
         public WindowClass( )
         {
@@ -41,13 +42,16 @@ namespace FileManager
             Console.SetBufferSize(Console.WindowWidth, WINDOW_HEIGHT);
             Console.SetWindowSize(Console.WindowWidth, WINDOW_HEIGHT);
 
-            _selectedDir = FDWorker.GetDirectory("");
-            _selectedDirName = FDWorker.GetDirectoryNames("");
+            _settingWorker = new SettingWorkerJson();
+            _appSetting = _settingWorker.ReadJsonSetting();
+
+            _selectedDir = FDWorker.GetDirectory(_appSetting.LastPath);
+            _selectedDirName = FDWorker.GetDirectoryNames(_appSetting.LastPath);
             _listInfo = new List<string> { _txtInfo };
+
             _indexController = new CountControllerInWin();
             _indexController.StartIndex = 0;
             _indexController.EndIndex = MAX_NUMBER_FILE_NAMES;
-
         }
 
         public void StartFMWindows()
@@ -107,6 +111,7 @@ namespace FileManager
                     MoveUp();
                     break;
                 case ConsoleKey.Enter:
+                    _appSetting.LastPath = _selectedDir[_itemDirIndex];
                     PressEnter();
                     break;
                 case ConsoleKey.F1:
@@ -122,6 +127,7 @@ namespace FileManager
                     DeleteFileOrDir();
                     break;
                 case ConsoleKey.F5:
+                    _settingWorker.WriteSettingInFile(_appSetting);
                     _isWork = false;
                     break;
                 case ConsoleKey.Escape:

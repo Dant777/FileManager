@@ -11,20 +11,20 @@ namespace FileManager
         static void Main(string[] args)
         {
 
-            //WindowClass window = new WindowClass();
+            WindowClass window = new WindowClass();
 
-            //window.StartFMWindows();
+            window.StartFMWindows();
 
-            SettingWorkerJson settingWorker = new SettingWorkerJson();
-            settingWorker.ReadJsonSetting();
-            AppSettingClass appSetting = settingWorker.GetSettingClass;
-            Console.WriteLine(appSetting.LastPath);
+            //SettingWorkerJson settingWorker = new SettingWorkerJson();
+            //settingWorker.ReadJsonSetting();
+            //AppSettingClass appSetting = settingWorker.GetSettingClass;
+            //Console.WriteLine(appSetting.LastPath);
 
-            appSetting.LastPath = @"C:\asda\sdadq\111";
-            settingWorker.WriteSettingInFile();
-            Console.WriteLine(appSetting.LastPath);
+            //appSetting.LastPath = @"C:\asda\sdadq\111";
+            //settingWorker.WriteSettingInFile();
+            //Console.WriteLine(appSetting.LastPath);
 
-            Console.ReadKey();
+            //Console.ReadKey();
         }
         
         
