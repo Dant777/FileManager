@@ -59,6 +59,7 @@ namespace FileManager
             while (_isWork)
             {
                 
+
                 try
                 {
                     CreateFileManagerWindow();
